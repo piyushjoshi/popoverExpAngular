@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="mainIntlApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="mainIntlApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="mainIntlApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="mainIntlApp" class="no-js">
+<!--<![endif]-->
+
+<head>
+<link rel="stylesheet" type="text/css"
+	href="css/app-main-bundle-core.css" />
+</head>
+
+<body>
+
+	<div ng-controller="PopoverDemoCtrl">
+    <h4>Dynamic</h4>
+    <div class="form-group">
+      <label>Popup Text:</label>
+      <input type="text" ng-model="dynamicPopover" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Popup Title:</label>
+      <input type="text" ng-model="dynamicPopoverTitle" class="form-control">
+    </div>
+    <button popover="{{dynamicPopover}}" popover-title="{{dynamicPopoverTitle}}" class="btn btn-default">Dynamic Popover</button>
+    
+    <hr />
+    <h4>Positional</h4>
+    <button popover-placement="top" popover="On the Top!" class="btn btn-default">Top</button>
+    <button popover-placement="left" popover="On the Left!" class="btn btn-default">Left</button>
+    <button popover-placement="right" popover="On the Right!" class="btn btn-default">Right</button>
+    <button popover-placement="bottom" popover="On the Bottom!" class="btn btn-default">Bottom</button>
+    
+    <hr />
+    <h4>Triggers</h4>
+    <p>
+      <button popover="I appeared on mouse enter!" popover-trigger="mouseenter" class="btn btn-default">Mouseenter</button>
+    </p>
+    <input type="text" value="Click me!" popover="I appeared on focus! Click away and I'll vanish..."  popover-trigger="focus" class="form-control">
+
+    <hr />
+    <h4>Other</h4>
+    <button Popover-animation="true" popover="I fade in and out!" class="btn btn-default">fading</button>
+    <button popover="I have a title!" popover-title="The title." class="btn btn-default">title</button>
+    <button ng-click="openModal()">Flexi</button>
+</div>
+	<script type="text/javascript"
+		src="js/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript"
+		src="js/angular.js"></script>
+	<script type="text/javascript"
+		src="js/index.js"></script>
+	<script type="text/javascript">
+		var closePop = function(e){
+			$('*[popover]').each(function () {
+                //Only do this for all popovers other than the current one that cause this event
+                if ((!($(this).is(e.target) || $(this).has(e.target).length > 0) 
+                     && $(this).siblings('.popover').length !== 0 
+                     && $(this).siblings('.popover').has(e.target).length === 0)
+                     || $(e.target).hasClass('close_chonch'))                  
+                {
+                     //Remove the popover element from the DOM          
+                     $(this).siblings('.popover').remove();
+                     //Set the state of the popover in the scope to reflect this          
+                     angular.element(this).scope().tt_isOpen = false;
+                }
+    });
+		};
+		angular.module('mainIntlApp',['ui.bootstrap']).controller('PopoverDemoCtrl', function ($scope, $modal) {
+		  $scope.dynamicPopover = 'Hello, World!';
+		  $scope.dynamicPopoverTitle = 'Title';
+		  $scope.openModal = function(){
+			  $modal.open({
+					templateUrl : 'modal.html',
+					controller : 'modalCtrl'
+					});
+		  };
+		}).controller('modalCtrl', function($scope){
+			$scope.dynamicPopover = '<span>Hellow kjekjkjr!</span>';
+			  $scope.airline = 'Airline';
+			  $scope.closePopNG = function(){
+				  closePop.call($event.target, $event);
+			  };
+		});
+		$('body').on('click', function (e) {
+			closePop(e);
+			});
+	</script>
+</body>
+</html>
