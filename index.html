@@ -21,7 +21,7 @@
 	<script type="text/javascript"
 		src="js/angular.js"></script>
 	<script type="text/javascript"
-		src="js/ui-bootstrap-tpls.min.js"></script>
+		src="js/ui-bootstrap-tpls.js"></script>
 	<script type="text/javascript">
 		var closePop = function(e){
 			$('*[popover-template]').each(function () {
@@ -47,6 +47,11 @@
 		  };
 		}).controller('modalCtrl', function($scope){
 			  $scope.airlineInfo = 'Awesome Chonch!';
+			  $scope.dataArr = [{data : '1'},{data : '2'},{data : '3'}];
+			  $scope.clickAnchor = function(dataObj){
+				  console.log("anchor clicked");
+				  $scope.theData = dataObj;
+			  };
 		});
 		$('body').on('click', function (e) {
 			closePop(e);
